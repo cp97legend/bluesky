@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>BlueSky</string>
+   <string>BlueSky 中文版</string>
   </property>
   <property name="unifiedTitleAndToolBarOnMac">
    <bool>true</bool>
@@ -114,7 +114,7 @@
          <enum>Qt::NoFocus</enum>
         </property>
         <attribute name="label">
-         <string>Aircraft</string>
+         <string>航空器</string>
         </attribute>
        </widget>
        <widget class="AreaList" name="areapage">
@@ -133,7 +133,7 @@
          <bool>true</bool>
         </property>
         <attribute name="label">
-         <string>Areas</string>
+         <string>区域</string>
         </attribute>
        </widget>
        <widget class="StackList" name="stackpage">
@@ -149,7 +149,7 @@
          <enum>Qt::NoFocus</enum>
         </property>
         <attribute name="label">
-         <string>Stack</string>
+         <string>命令栈</string>
         </attribute>
        </widget>
       </widget>
@@ -210,7 +210,7 @@
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="toolTip">
-         <string>pan left</string>
+         <string>向左平移</string>
         </property>
         <property name="text">
          <string>...</string>
@@ -229,7 +229,7 @@
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="toolTip">
-         <string>pan right</string>
+         <string>向右平移</string>
         </property>
         <property name="text">
          <string>...</string>
@@ -248,7 +248,7 @@
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="toolTip">
-         <string>pan up</string>
+         <string>向上平移</string>
         </property>
         <property name="text">
          <string>...</string>
@@ -267,7 +267,7 @@
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="toolTip">
-         <string>pan down</string>
+         <string>向下平移</string>
         </property>
         <property name="text">
          <string>...</string>
@@ -286,7 +286,7 @@
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="toolTip">
-         <string>zoom in</string>
+         <string>放大</string>
         </property>
         <property name="text">
          <string>...</string>
@@ -305,7 +305,7 @@
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="toolTip">
-         <string>zoom out</string>
+         <string>缩小</string>
         </property>
         <property name="text">
          <string>...</string>
@@ -464,7 +464,7 @@
              </size>
             </property>
             <attribute name="title">
-             <string>Sim</string>
+             <string>仿真</string>
             </attribute>
             <layout class="QGridLayout" name="gridLayout">
              <property name="sizeConstraint">
@@ -503,7 +503,7 @@
                 <enum>Qt::NoFocus</enum>
                </property>
                <property name="toolTip">
-                <string>start simulation</string>
+                <string>开始仿真</string>
                </property>
                <property name="text">
                 <string>Op</string>
@@ -531,7 +531,7 @@
                 <enum>Qt::NoFocus</enum>
                </property>
                <property name="toolTip">
-                <string>pause simulation</string>
+                <string>暂停仿真</string>
                </property>
                <property name="text">
                 <string>Hold</string>
@@ -559,7 +559,7 @@
                 <enum>Qt::NoFocus</enum>
                </property>
                <property name="toolTip">
-                <string>fast forward</string>
+                <string>快速前进</string>
                </property>
                <property name="text">
                 <string>FF</string>
@@ -587,7 +587,7 @@
                 <enum>Qt::NoFocus</enum>
                </property>
                <property name="toolTip">
-                <string>fast forward (10 sec)</string>
+                <string>快速前进（10 秒）</string>
                </property>
                <property name="text">
                 <string>FF10</string>
@@ -615,7 +615,7 @@
                 <enum>Qt::NoFocus</enum>
                </property>
                <property name="toolTip">
-                <string>open scenario file</string>
+                <string>打开场景文件</string>
                </property>
                <property name="text">
                 <string>IC</string>
@@ -643,7 +643,7 @@
                 <enum>Qt::NoFocus</enum>
                </property>
                <property name="toolTip">
-                <string>open previous scenario</string>
+                <string>打开上一次场景</string>
                </property>
                <property name="text">
                 <string>IC IC</string>
@@ -669,7 +669,7 @@
              </size>
             </property>
             <attribute name="title">
-             <string>Gui</string>
+             <string>界面</string>
             </attribute>
             <layout class="QGridLayout" name="gridLayout_2">
              <property name="sizeConstraint">
@@ -708,7 +708,7 @@
                 <enum>Qt::NoFocus</enum>
                </property>
                <property name="toolTip">
-                <string>Show/hide aircraft</string>
+                <string>显示或隐藏航空器</string>
                </property>
                <property name="text">
                 <string>AC</string>
@@ -736,7 +736,7 @@
                 <enum>Qt::NoFocus</enum>
                </property>
                <property name="toolTip">
-                <string>Show/hide protected zones</string>
+                <string>显示或隐藏保护区</string>
                </property>
                <property name="text">
                 <string>PZ</string>
@@ -764,7 +764,7 @@
                 <enum>Qt::NoFocus</enum>
                </property>
                <property name="toolTip">
-                <string>Show airports (all/large/off)</string>
+                <string>显示机场（全部/大型/关闭）</string>
                </property>
                <property name="text">
                 <string>APT</string>
@@ -792,7 +792,7 @@
                 <enum>Qt::NoFocus</enum>
                </property>
                <property name="toolTip">
-                <string>show waypoints (all/navaids/off)</string>
+                <string>显示航路点（全部/导航点/关闭）</string>
                </property>
                <property name="text">
                 <string>WPT</string>
@@ -820,7 +820,7 @@
                 <enum>Qt::NoFocus</enum>
                </property>
                <property name="toolTip">
-                <string>Show/hide labels</string>
+                <string>显示或隐藏标签</string>
                </property>
                <property name="text">
                 <string>LBL</string>
@@ -848,7 +848,7 @@
                 <enum>Qt::NoFocus</enum>
                </property>
                <property name="toolTip">
-                <string>Toggle sattelite background</string>
+                <string>切换卫星底图</string>
                </property>
                <property name="text">
                 <string>MAP</string>
@@ -874,7 +874,7 @@
              </size>
             </property>
             <attribute name="title">
-             <string>Cust</string>
+             <string>自定义</string>
             </attribute>
             <layout class="QGridLayout" name="gridLayout_3">
              <property name="sizeConstraint">
@@ -1381,7 +1381,7 @@
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>文件</string>
     </property>
     <addaction name="action_Open"/>
     <addaction name="action_Save"/>
@@ -1389,7 +1389,7 @@
    </widget>
    <widget class="QMenu" name="menu_View">
     <property name="title">
-     <string>&amp;View</string>
+     <string>视图(&amp;V)</string>
     </property>
     <addaction name="action_Reset_view"/>
    </widget>
@@ -1398,13 +1398,13 @@
      <bool>false</bool>
     </property>
     <property name="title">
-     <string>Connections</string>
+     <string>连接</string>
     </property>
     <addaction name="actionConnect_servers"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
-     <string>Help</string>
+     <string>帮助</string>
     </property>
     <addaction name="actionAbout_BlueSky"/>
     <addaction name="actionBlueSky_help"/>
@@ -1416,12 +1416,12 @@
   </widget>
   <action name="action_Open">
    <property name="text">
-    <string>&amp;Open</string>
+    <string>打开(&amp;O)</string>
    </property>
   </action>
   <action name="action_Save">
    <property name="text">
-    <string>&amp;Save</string>
+    <string>保存(&amp;S)</string>
    </property>
   </action>
   <action name="action_Reset_view">
@@ -1429,37 +1429,37 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>&amp;Reset view</string>
+    <string>重置视图(&amp;R)</string>
    </property>
   </action>
   <action name="actionConnect_servers">
    <property name="text">
-    <string>Connect servers</string>
+    <string>连接服务器</string>
    </property>
   </action>
   <action name="actionAbout_BlueSky">
    <property name="text">
-    <string>About BlueSky</string>
+    <string>关于 BlueSky</string>
    </property>
   </action>
   <action name="actionBlueSky_help">
    <property name="text">
-    <string>BlueSky help</string>
+    <string>BlueSky 帮助</string>
    </property>
   </action>
   <action name="actionSettings">
    <property name="text">
-    <string>Settings</string>
+    <string>设置</string>
    </property>
   </action>
   <action name="actionpackage">
    <property name="text">
-    <string>package</string>
+    <string>程序包</string>
    </property>
   </action>
   <action name="actionuser">
    <property name="text">
-    <string>user</string>
+    <string>用户</string>
    </property>
   </action>
  </widget>

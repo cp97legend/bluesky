@@ -17,8 +17,8 @@ _sig_echo = Signal('echo')
 def init():
     ''' client-side stack initialisation. '''
     # Display Help text on start of program
-    stack("ECHO BlueSky Console Window: Enter HELP or ? for info.\n"
-          "Or select IC to Open a scenario file.")
+    stack("ECHO BlueSky 命令窗口：输入 HELP 或 ? 查看帮助。\n"
+          "也可以点击 IC 打开场景文件。")
 
 
 def process():

@@ -76,19 +76,19 @@ def process(ext_cmds=None):
                         echotext = echotext or cmdobj.brieftext()
                     else:
                         echoflags = bs.BS_FUNERR
-                        echotext = f'Syntax error: {echotext or cmdobj.brieftext()}'
+                        echotext = f'语法错误：{echotext or cmdobj.brieftext()}'
 
             except ArgumentError as e:
                 success = False
                 echoflags = bs.BS_ARGERR
-                header = '' if not argstring else e.args[0] if e.args else 'Argument error.'
-                echotext = f'{header}\nUsage:\n{cmdobj.brieftext()}'
+                header = '' if not argstring else e.args[0] if e.args else '参数错误。'
+                echotext = f'{header}\n用法：\n{cmdobj.brieftext()}'
                 traceback.print_exc()
             except Exception as e:
                 echoflags = bs.BS_FUNERR
-                header = '' if not argstring else e.args[0] if e.args else 'Function error.'
-                echotext = f'Error calling function implementation of {cmdu}: {header}\n' + \
-                    'Traceback printed to terminal.'
+                header = '' if not argstring else e.args[0] if e.args else '函数执行错误。'
+                echotext = f'执行命令 {cmdu} 时出错：{header}\n' + \
+                    '详细堆栈已输出到终端。'
                 traceback.print_exc()
 
         # -------------------------------------------------------------------
@@ -101,9 +101,9 @@ def process(ext_cmds=None):
             success = False
             echoflags = bs.BS_CMDERR
             if not argstring:
-                echotext = f'Unknown command or aircraft: {cmd}'
+                echotext = f'未知命令或飞机编号：{cmd}'
             else:
-                echotext = f'Unknown command: {cmd}'
+                echotext = f'未知命令：{cmd}'
 
         # Recording of actual validated commands
         if success:
@@ -195,7 +195,7 @@ def pcall(fname, *pcall_arglst):
         merge(readscn(fname), *pcall_arglst, isrelative=isrelative)
 
     except FileNotFoundError as e:
-        return False, f"PCALL: File not found'{e.filename}'"
+        return False, f"PCALL：找不到文件 '{e.filename}'"
 
 
 def merge(source, *args, isrelative=True):
@@ -294,9 +294,9 @@ def ic(filename : 'string' = ''):
             )
             keepicfile.write(f"00:00:00.00>IC {filename}\n")
 
-        return True, f"IC: Opened {filename}"
+        return True, f"IC：已打开场景 {filename}"
     except FileNotFoundError:
-        return False, f"IC: File not found: {filename}"
+        return False, f"IC：找不到文件 {filename}"
 
 
 @command(aliases=('SCEN',))
@@ -306,7 +306,7 @@ def scenario(name: 'string'):
         Arguments:
         - name: The name to give the scenario """
     Stack.scenname = name
-    return True, "Starting scenario " + name
+    return True, "开始场景 " + name
 
 
 @command
@@ -380,9 +380,9 @@ def showhelp(cmd:'txt'='', subcmd:'txt'=''):
             # Header of first table
             f.write("Command\tDescription\tUsage\tArgument types\tFunction\tSynonyms\n")
             f.write('\n'.join(table))
-        return True, "Writing command reference in " + fname
+        return True, "正在写入命令参考文件到 " + fname
 
-    return False, "HELP: Unknown command: " + cmd
+    return False, "HELP：未知命令：" + cmd
 
 
 @command
@@ -421,4 +421,4 @@ def makedoc():
 @command(aliases=tmxlist)
 def tmx(*args):
     ''' Stub function for TMX commands that aren't available yet in BlueSky. '''
-    return True, 'This TMX command has not (yet) been implemented in BlueSky.'
+    return True, '这个 TMX 命令暂未在 BlueSky 中实现。'

@@ -72,7 +72,7 @@ class DiscoveryDialog(QDialog):
         layout = QVBoxLayout()
         self.setLayout(layout)
         self.serverview = QTreeWidget()
-        self.serverview.setHeaderLabels(['Server', 'Ports'])
+        self.serverview.setHeaderLabels(['服务器', '端口'])
         self.serverview.setIndentation(0)
         self.serverview.setStyleSheet('padding:0px')
         self.serverview.header().resizeSection(0, 180)
@@ -98,7 +98,7 @@ class DiscoveryDialog(QDialog):
         server = QTreeWidgetItem(self.serverview)
         server.address = address
         server.ports = ports
-        server.hostname = 'This computer' if address == get_ownip() else address
+        server.hostname = '本机' if address == get_ownip() else address
         server.setText(0, server.hostname)
 
         server.setText(1, '{},{}'.format(*ports))
@@ -118,7 +118,7 @@ class DiscoveryDialog(QDialog):
 class MainWindow(QMainWindow, Base):
     """ Qt window process: from .ui file read UI window-definition of main window """
 
-    modes = ['Init', 'Hold', 'Operate', 'End']
+    modes = ['初始化', '暂停', '运行中', '结束']
 
     # Per remote node attributes
     nconf_cur: ss.ActData[int] = ss.ActData(0, group='acdata')
@@ -176,12 +176,12 @@ class MainWindow(QMainWindow, Base):
         # If multiple scenario paths exist, add 'Open From' menu
         scenresource = bs.resource('scenario')
         if isinstance(scenresource, ResourcePath) and scenresource.nbases > 1:
-            openfrom = QMenu('Open From', self.menuFile)
+            openfrom = QMenu('从以下位置打开', self.menuFile)
             self.menuFile.insertMenu(self.action_Save, openfrom)
 
-            openpkg = openfrom.addAction('Package')
+            openpkg = openfrom.addAction('程序包')
             openpkg.triggered.connect(lambda: self.show_file_dialog(scenresource.base(-1)))
-            openusr = openfrom.addAction('User')
+            openusr = openfrom.addAction('用户目录')
             openusr.triggered.connect(lambda: self.show_file_dialog(scenresource.base(0)))
 
         # Link menubar buttons
@@ -385,7 +385,7 @@ class MainWindow(QMainWindow, Base):
         if nodeid != self.actnode:
             self.actnode = nodeid
             node = self.nodes[nodeid]
-            self.nodelabel.setText(f'<b>Node</b> {node.serv_num}:{node.node_num}')
+            self.nodelabel.setText(f'<b>节点</b> {node.serv_num}:{node.node_num}')
             self.nodetree.setCurrentItem(node, 0, QItemSelectionModel.SelectionFlag.ClearAndSelect)
 
     def serversChanged(self, server_id):
@@ -395,7 +395,7 @@ class MainWindow(QMainWindow, Base):
             self.maxservnum += 1
             server.serv_num = self.maxservnum
             server.server_id = server_id
-            hostname = 'Ungrouped' if server_id == b'0' else 'This computer'
+            hostname = '未分组' if server_id == b'0' else '本机'
             f = server.font(0)
             f.setBold(True)
             server.setExpanded(True)
@@ -465,7 +465,7 @@ class MainWindow(QMainWindow, Base):
         simt = tim2txt(simt)[:-3]
         self.setNodeInfo(ctx.sender_id, simt, scenname)
         if ctx.sender_id == bs.net.act_id:
-            self.siminfoLabel.setText(u'<b>t:</b> %s, <b>\u0394t:</b> %.2f, <b>Speed:</b> %.1fx, <b>UTC:</b> %s, <b>Mode:</b> %s, <b>Aircraft:</b> %d, <b>Conflicts:</b> %d/%d, <b>LoS:</b> %d/%d'
+            self.siminfoLabel.setText(u'<b>t:</b> %s, <b>\u0394t:</b> %.2f, <b>速度:</b> %.1fx, <b>UTC:</b> %s, <b>模式:</b> %s, <b>航空器:</b> %d, <b>冲突:</b> %d/%d, <b>失距:</b> %d/%d'
                 % (simt, simdt, speed, simutc, self.modes[state], ntraf, self.nconf_cur, self.nconf_tot, self.nlos_cur, self.nlos_tot))
 
     def setNodeInfo(self, connid, time, scenname):
@@ -550,9 +550,9 @@ class MainWindow(QMainWindow, Base):
                 scenpath = path
             
             if platform.system().lower() == 'darwin':
-                response = QFileDialog.getOpenFileName(self, 'Open file', scenpath, 'Scenario files (*.scn)')
+                response = QFileDialog.getOpenFileName(self, '打开文件', scenpath, '场景文件 (*.scn)')
             else:
-                response = QFileDialog.getOpenFileName(self, 'Open file', scenpath, 'Scenario files (*.scn)', options=QFileDialog.Option.DontUseNativeDialog)
+                response = QFileDialog.getOpenFileName(self, '打开文件', scenpath, '场景文件 (*.scn)', options=QFileDialog.Option.DontUseNativeDialog)
             fname = response[0] if isinstance(response, tuple) else response
 
         # Send IC command to stack with filename if selected, else do nothing

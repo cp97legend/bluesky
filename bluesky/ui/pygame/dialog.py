@@ -33,8 +33,8 @@ def fileopen():
     master.withdraw()  # hiding tkinter window
     master.focus_set()
     
-    file_path = filedialog.askopenfilename(title="Open scenario file", 
-        filetypes=[("Scenario files",".scn"),("All files",".*")],\
+    file_path = filedialog.askopenfilename(title="打开场景文件", 
+        filetypes=[("场景文件",".scn"),("所有文件",".*")],\
         initialdir=".")
 
     # Close Tk, return to working directory

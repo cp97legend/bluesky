@@ -1,5 +1,7 @@
 """ Keyboard and mouse processing for the pygame version of BlueSky."""
 from math import *
+import ctypes
+from ctypes import wintypes
 import pygame as pg
 import bluesky as bs
 from bluesky import stack
@@ -28,6 +30,54 @@ class Keyboard:
         self.firstx = True
         return
 
+    def get_clipboard_text(self):
+        """Read text from the system clipboard for console pasting."""
+        cliptext = ""
+
+        if pg.platform.system == "Windows":
+            CF_UNICODETEXT = 13
+            user32 = ctypes.WinDLL("user32", use_last_error=True)
+            kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+
+            user32.OpenClipboard.argtypes = [wintypes.HWND]
+            user32.OpenClipboard.restype = wintypes.BOOL
+            user32.GetClipboardData.argtypes = [wintypes.UINT]
+            user32.GetClipboardData.restype = wintypes.HANDLE
+            user32.CloseClipboard.argtypes = []
+            user32.CloseClipboard.restype = wintypes.BOOL
+            kernel32.GlobalLock.argtypes = [wintypes.HGLOBAL]
+            kernel32.GlobalLock.restype = wintypes.LPVOID
+            kernel32.GlobalUnlock.argtypes = [wintypes.HGLOBAL]
+            kernel32.GlobalUnlock.restype = wintypes.BOOL
+
+            if user32.OpenClipboard(None):
+                handle = user32.GetClipboardData(CF_UNICODETEXT)
+                if handle:
+                    locked = kernel32.GlobalLock(handle)
+                    if locked:
+                        try:
+                            cliptext = ctypes.wstring_at(locked)
+                        finally:
+                            kernel32.GlobalUnlock(handle)
+                user32.CloseClipboard()
+
+        if not cliptext:
+            try:
+                import tkinter as tk
+
+                root = tk.Tk()
+                root.withdraw()
+                root.update()
+                cliptext = root.clipboard_get()
+                root.destroy()
+            except Exception:
+                cliptext = ""
+
+        if not cliptext:
+            return ""
+
+        return " ".join(cliptext.replace("\r", "\n").split())
+
     def update(self):
 
         # First time: IC window in pygame version
@@ -41,9 +91,17 @@ class Keyboard:
                 bs.sim.quit()
 
             elif event.type==pg.KEYDOWN:
+                mods = pg.key.get_mods()
+
+                # Paste clipboard into the command line
+                if ((mods & pg.KMOD_CTRL) and event.key == pg.K_v) or \
+                   ((mods & pg.KMOD_SHIFT) and event.key == pg.K_INSERT):
+                    cliptext = self.get_clipboard_text()
+                    if cliptext:
+                        bs.scr.editwin.insert(cliptext)
 
                 # Alphanumeric key
-                if event.key>31 and event.key<127:
+                elif event.key>31 and event.key<127:
                     bs.scr.editwin.insert(str(event.unicode))  #.upper())
 
                 elif event.key==13: # ENTER
@@ -115,6 +173,7 @@ class Keyboard:
                     elif bs.scr.menu.rect.collidepoint(event.pos) and \
                          not self.dragmenu:
                         cmdtxt = bs.scr.menu.getcmd(event.pos)
+                        bs.scr.editwin.redraw = True
                         if cmdtxt != "":
                             stack.stack(cmdtxt)
 

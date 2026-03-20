@@ -34,7 +34,7 @@ class Console:
 
     def __init__(self,win,nch,nlin,winx,winy):
         # Was Helvetica,14
-        self.fontedit = Fastfont(win,'Courier New',14,white,False,False) # name, size, bold,italic
+        self.fontedit = Fastfont(win,'Microsoft YaHei UI',14,white,False,False) # name, size, bold,italic
 
         # Edit window: 6 line of 64 chars
         self.content = []

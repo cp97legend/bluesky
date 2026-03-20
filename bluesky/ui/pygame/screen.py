@@ -88,7 +88,7 @@ class Screen(Entity):
     def init(self):
         # Read Screen configuration file:
         print()
-        print("Setting up screen...")
+        print("正在初始化界面...")
 
         lst = np.genfromtxt(bs.resource("graphics/scr_cfg.dat"), comments='#', dtype='i4')
 
@@ -193,7 +193,7 @@ class Screen(Entity):
             reso = (self.width, self.height)
             self.win = pg.display.set_mode(reso)
 
-        pg.display.set_caption("BlueSky Open ATM Simulator (F11 = Full Screen)", "BlueSky")
+        pg.display.set_caption("BlueSky 空中交通模拟器（F11 全屏）", "BlueSky")
         iconpath = bs.resource("graphics/icon.gif")
         iconbmp = pg.image.load(iconpath)
         pg.display.set_icon(iconbmp)
@@ -203,10 +203,10 @@ class Screen(Entity):
 
         #---------------------RADAR FONTS & EDIT WINDOW-----------------------------
         # Set up fonts
-        self.fontrad = Fastfont(self.win, 'Arial', 14, green, False, False)  # name, size, bold,italic
-        self.fontamb = Fastfont(self.win, 'Arial', 14, amber, False, False)  # name, size, bold,italic
-        self.fontnav = Fastfont(self.win, 'Arial', 12, lightgreyblue, False, False)  # name, size, bold,italic
-        self.fontsys = Fastfont(self.win, 'Helvetica', 14, white, False, False)  # name, size, bold,italic
+        self.fontrad = Fastfont(self.win, 'Microsoft YaHei UI', 14, green, False, False)  # name, size, bold,italic
+        self.fontamb = Fastfont(self.win, 'Microsoft YaHei UI', 14, amber, False, False)  # name, size, bold,italic
+        self.fontnav = Fastfont(self.win, 'Microsoft YaHei UI', 12, lightgreyblue, False, False)  # name, size, bold,italic
+        self.fontsys = Fastfont(self.win, 'Microsoft YaHei UI', 14, white, False, False)  # name, size, bold,italic
 
         # Edit window: 6 line of 64 chars
         nch = lst[3]  # number of chars per line
@@ -222,7 +222,7 @@ class Screen(Entity):
         #-------------------------COASTLINE DATA--------------------------------------
         # Init geo (coastline)  data
         f = open(bs.resource("navdata/coastlines.dat"), 'r')
-        print("Reading coastlines.dat")
+        print("正在读取海岸线数据 coastlines.dat")
         lines = f.readlines()
         f.close()
         records = []
@@ -859,8 +859,7 @@ class Screen(Entity):
         self.editwin.update()
 
         if self.redrawradbg or redrawrad or self.editwin.redraw:
-            self.win.blit(self.menu.bmps[self.menu.ipage], \
-                           (self.menu.x, self.menu.y))
+            self.win.blit(self.menu.update(), (self.menu.x, self.menu.y))
             self.win.blit(self.editwin.bmp, (self.editwin.winx, self.editwin.winy))
 
             # Draw frames
@@ -868,21 +867,15 @@ class Screen(Entity):
             pg.draw.rect(self.win, white, pg.Rect(1, 1, self.width - 1, self.height - 1), 1)
 
             # Add debug line
-            self.fontsys.printat(self.win, 10, 2, str(bs.sim.utc.replace(microsecond=0)))
-            self.fontsys.printat(self.win, 10, 18, tim2txt(bs.sim.simt))
-            self.fontsys.printat(self.win, 10+80, 2, \
-                                 "ntraf = " + str(bs.traf.ntraf))
-            self.fontsys.printat(self.win, 10+160, 2, \
-                                 "Freq=" + str(int(len(self.dts) / max(0.001, sum(self.dts)))))
+            self.fontsys.printat(self.win, 10, 2, "UTC " + str(bs.sim.utc.replace(microsecond=0)))
+            self.fontsys.printat(self.win, 10, 18, "仿真时间 " + tim2txt(bs.sim.simt))
+            self.fontsys.printat(self.win, 170, 2, "飞机数 " + str(bs.traf.ntraf))
+            self.fontsys.printat(self.win, 300, 2, "刷新率 " + str(int(len(self.dts) / max(0.001, sum(self.dts)))))
 
-            self.fontsys.printat(self.win, 10+240, 2, \
-                                 "#LOS      = " + str(len(bs.traf.cd.lospairs_unique)))
-            self.fontsys.printat(self.win, 10+240, 18, \
-                                 "Total LOS = " + str(len(bs.traf.cd.lospairs_all)))
-            self.fontsys.printat(self.win, 10+240, 34, \
-                                 "#Con      = " + str(len(bs.traf.cd.confpairs_unique)))
-            self.fontsys.printat(self.win, 10+240, 50, \
-                                 "Total Con = " + str(len(bs.traf.cd.confpairs_all)))
+            self.fontsys.printat(self.win, 430, 2, "当前失距 " + str(len(bs.traf.cd.lospairs_unique)))
+            self.fontsys.printat(self.win, 430, 18, "累计失距 " + str(len(bs.traf.cd.lospairs_all)))
+            self.fontsys.printat(self.win, 430, 34, "当前冲突 " + str(len(bs.traf.cd.confpairs_unique)))
+            self.fontsys.printat(self.win, 430, 50, "累计冲突 " + str(len(bs.traf.cd.confpairs_all)))
 
             # Frame ready, flip to screen
             pg.display.flip()
@@ -1061,7 +1054,7 @@ class Screen(Entity):
 
         di = pg.display.Info()
 
-        pg.display.set_caption("BlueSky Open ATM Simulator (F11 = Full Screen)",
+        pg.display.set_caption("BlueSky 空中交通模拟器（F11 全屏）",
                                "BlueSky")
         iconpath = bs.resource("graphics/icon.gif")
         iconbmp = pg.image.load(iconpath)
@@ -1257,6 +1250,12 @@ class Screen(Entity):
 
     def show_file_dialog(self):
         return opendialog()
+
+    @stack.command(name='QUIT', annotations='', aliases=('CLOSE', 'END', 'EXIT', 'Q', 'STOP'))
+    def quit(self):
+        """Quit the pygame GUI."""
+        bs.sim.quit()
+        return True
     
     @stack.command
     def symbol(self):
@@ -1275,10 +1274,10 @@ class Screen(Entity):
                 subprocess.Popen(htmlfile,shell=True)
             except:
                 os.chdir(curdir)
-                return False,"Opening "+htmlfile+" failed."
+                return False,"打开 "+htmlfile+" 失败。"
         else:
             os.chdir(curdir)
-            return False,htmlfile+" is not yet available, try HELP PDF or check the wiki on Github."
+            return False,htmlfile+" 暂时不可用，请尝试 HELP PDF 或前往 GitHub Wiki。"
 
         os.chdir(curdir)
-        return True,"HTML window opened"
+        return True,"已打开帮助页面"

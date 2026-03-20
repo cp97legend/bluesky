@@ -74,11 +74,11 @@ class SettingsWindow(QWidget, Base):
         bottombar.setLayout(QHBoxLayout())
         bottombar.layout().setContentsMargins(11, 1, 1, 1)
         self.changedlabel = QLabel()
-        self.resetbtn = QPushButton('Reset')
+        self.resetbtn = QPushButton('重置')
         self.resetbtn.setFixedWidth(100)
         self.resetbtn.setEnabled(False)
         self.resetbtn.clicked.connect(self.btnclicked)
-        self.savebtn = QPushButton('Save')
+        self.savebtn = QPushButton('保存')
         self.savebtn.setFixedWidth(100)
         self.savebtn.setEnabled(False)
         self.savebtn.clicked.connect(self.btnclicked)
@@ -118,19 +118,19 @@ class SettingsWindow(QWidget, Base):
         top = bs.settings._settings_hierarchy['bluesky']
         netset = top['network']
         netitems = {**netset['discovery'], **netset['server']}
-        net = self.make_settings_box('Network settings', netitems)
+        net = self.make_settings_box('网络设置', netitems)
         self.scrollarea.layout.addWidget(net)
 
         pathitems = {n:v for n, v in bs.settings.__dict__.items() if 'path' in n}
-        paths = self.make_settings_box('Paths', pathitems)
+        paths = self.make_settings_box('路径设置', pathitems)
         self.scrollarea.layout.addWidget(paths)
 
         guiitems = {n:v for n, v in top['ui']['qtgl']['radarwidget'].items() if 'path' not in n}
         guiitems['colour_palette'] = bs.settings.colour_palette
-        gui = self.make_settings_box('Gui settings', guiitems, target='gui')
+        gui = self.make_settings_box('界面设置', guiitems, target='gui')
         self.scrollarea.layout.addWidget(gui)
 
-        sim = QGroupBox('Simulation settings')
+        sim = QGroupBox('仿真设置')
         sim.setLayout(QHBoxLayout())
         self.scrollarea.layout.addWidget(sim)
         sim.layout().addWidget(self.nodetree)
@@ -146,12 +146,12 @@ class SettingsWindow(QWidget, Base):
             server.serv_num = self.maxservnum
             server.serv_id = server_id
             server.nodes = [i for i in bs.net.nodes if i.startswith(server_id[:-1])]
-            hostname = 'This computer'# if serv_id == bs.net.get_hostid() else str(serv_id)
+            hostname = '本机'# if serv_id == bs.net.get_hostid() else str(serv_id)
             f = server.font(0)
             f.setBold(True)
             server.setExpanded(True)
             server.setText(0, hostname)
-            server.setText(1, f'(nodes: {len(server.nodes)})')
+            server.setText(1, f'（节点数：{len(server.nodes)}）')
             self.servers[server_id] = server
 
     @pyqtSlot(QTreeWidgetItem, int)
@@ -169,13 +169,13 @@ class SettingsWindow(QWidget, Base):
             clear_layout(self.nodesettings.layout())
 
             top = simsettings['bluesky']
-            traf = self.make_settings_box('Traffic', top['traffic'], target=item.serv_id)
+            traf = self.make_settings_box('交通', top['traffic'], target=item.serv_id)
             stack = self.make_settings_box(
-                'Stack', top['stack'], target=item.serv_id)
+                '命令栈', top['stack'], target=item.serv_id)
             sim = self.make_settings_box(
-                'Simulation', top['simulation'], maxdepth=0, target=item.serv_id)
+                '仿真', top['simulation'], maxdepth=0, target=item.serv_id)
 
-            misc = self.make_settings_box('Misc', top['tools'], maxdepth=0, target=item.serv_id, avail_plugins=plugins)
+            misc = self.make_settings_box('其他', top['tools'], maxdepth=0, target=item.serv_id, avail_plugins=plugins)
             self.nodesettings.layout().addWidget(traf)
             self.nodesettings.layout().addWidget(stack)
             self.nodesettings.layout().addWidget(sim)
@@ -223,7 +223,7 @@ class SettingsWindow(QWidget, Base):
         wid = self.sender()
         # Store the changed value in a dict of all changed values
         self.changed[wid.target][wid.name] = value
-        self.changedlabel.setText('Save the changes and restart BlueSky for the changes to take effect.')
+        self.changedlabel.setText('请保存修改，并重启 BlueSky 使设置生效。')
         self.resetbtn.setEnabled(True)
         self.savebtn.setEnabled(True)
 

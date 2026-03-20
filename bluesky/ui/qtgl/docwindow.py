@@ -31,19 +31,17 @@ class DocWindow(QWidget):
     def __init__(self, app):
         super().__init__()
         self.vlayout  = QVBoxLayout()
-        self.backbtn = QPushButton('Back')
-        self.closebtn = QPushButton('Close')
+        self.backbtn = QPushButton('返回')
+        self.closebtn = QPushButton('关闭')
         if DocView is not None:
             self.view = DocView()
             self.backbtn.clicked.connect(self.view.back)
         else:
-            self.view = QLabel('BlueSky was not able to initialize it\'s\n' +
-                ' QtWebEngine-based documentation viewer.\n' +
-                'There may be something wrong with your Qt installation.\n' +
-                'If you haven\'t yet, try installing PyQtWebEngine:\n\n' +
+            self.view = QLabel('BlueSky 无法初始化内置文档浏览器。\n' +
+                '这通常意味着当前 Qt / WebEngine 安装不完整。\n' +
+                '如果还没有安装，可以尝试执行：\n\n' +
                 '    pip install PyQtWebEngine\n\n' +
-                'or, if you don\'t use pip, install it with your preferred\n' +
-                'python package manager.')
+                '或者使用你常用的 Python 包管理器安装相应组件。')
         self.vlayout.setContentsMargins(1, 1, 1, 1)
         self.vlayout.setSpacing(1)
         self.vlayout.addWidget(self.view)
@@ -55,7 +53,7 @@ class DocWindow(QWidget):
         hlayout.addWidget(self.backbtn)
         self.closebtn.clicked.connect(self.hide)
         self.setLayout(self.vlayout)
-        self.setWindowTitle('BlueSky documentation')
+        self.setWindowTitle('BlueSky 帮助文档')
 
     def show_cmd_doc(self, cmd):
         if not cmd:

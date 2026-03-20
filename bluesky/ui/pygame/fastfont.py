@@ -19,46 +19,39 @@ class Fastfont:
         self.swposx = -1  # Default x = left side
         self.swposy = -1  # Default y = top
 
-        pfont = pg.font.SysFont(name,size,bold,italic)
+        self.font = pg.font.SysFont(name,size,bold,italic)
+        self.color = color
+        self.screen = screen
 
-        # Render font
-
-        # Convert chars 32-126 to map of standard height bitmaps:
-        self.chmaps = []
-        self.chw = []
-        self.linedy = pfont.get_linesize()
-        
-        for ich in range(32,126):
-            ch = pfont.render(chr(ich),False,color)
-            ch = ch.convert_alpha(screen)
-            self.chmaps.append(ch)
-            self.chw.append(ch.get_width())
-        del pfont
+        # Cache glyphs on demand so non-ASCII text such as Chinese can render too.
+        self.chmaps = {}
+        self.linedy = self.font.get_linesize()
         return      
 
     def printat(self,screen,x,y,text):
+        text = str(text)
+        glyphs = []
+        width = 0
 
-        w = 0
         for ch in text:
-            ich = ord(ch)
-            if ich>=32 and ich<=126:
-                w = w + self.chw[ich-32]
+            if ch not in self.chmaps:
+                glyph = self.font.render(ch, False, self.color).convert_alpha(self.screen)
+                self.chmaps[ch] = glyph
+            glyph = self.chmaps[ch]
+            glyphs.append(glyph)
+            width += glyph.get_width()
 
-        txtimg = pg.Surface((w,self.linedy)) # Standard height bitmap
+        txtimg = pg.Surface((max(width, 1), self.linedy)) # Standard height bitmap
         txtimg = txtimg.convert_alpha(screen)
+        txtimg.fill((0, 0, 0, 0))
         
         ix = 0
-        for ch in text:
-            ich = ord(ch)
-            if ich>=32 and ich<=126:
-                w = w + self.chw[ich-32]
-                dest = self.chmaps[ich-32].get_rect()
-                dest.top = 0
-                dest.left = ix
-                ix = ix+self.chw[ich-32]
-                # chimg = self.chmaps[ich-32].convert_alpha(screen)
-
-                txtimg.blit(self.chmaps[ich-32],dest)# Removed pg.BLEND_ADD which broke it on Windows machine
+        for glyph in glyphs:
+            dest = glyph.get_rect()
+            dest.top = 0
+            dest.left = ix
+            ix += glyph.get_width()
+            txtimg.blit(glyph,dest)# Removed pg.BLEND_ADD which broke it on Windows machine
 
         dest = txtimg.get_rect()
 
